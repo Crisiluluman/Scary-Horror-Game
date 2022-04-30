@@ -33,6 +33,8 @@ namespace Input_Manager_and_Camera
         
         }
 
+        #region ClassSetup
+
         private void OnEnable()
         {
             masterControls.Enable();
@@ -42,6 +44,11 @@ namespace Input_Manager_and_Camera
         {
             masterControls.Disable();
         }
+
+        #endregion
+
+
+        #region PlayerActions
 
         public Vector2 GetPlayerMovement()
         {
@@ -59,9 +66,13 @@ namespace Input_Manager_and_Camera
 
         }
 
-        public void Interact(InputAction.CallbackContext context)
+        public bool InteractTriggered()
         {
-            Debug.Log("We fired");
+            return masterControls.Player.Interact.triggered;
         }
+
+        #endregion
+
+
     }
 }
