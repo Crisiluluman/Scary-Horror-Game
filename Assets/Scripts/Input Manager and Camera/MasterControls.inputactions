@@ -1,5 +1,5 @@
 {
-    "name": "MasterController",
+    "name": "MasterControls",
     "maps": [
         {
             "name": "Player",
@@ -36,6 +36,15 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "5b0a5c88-2491-480d-a1d1-08913196a7f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "fb5ca6e5-0f4a-4935-9acf-c1035402b065",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -280,8 +289,19 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "774b1c3d-5284-41bc-8875-7d34141775fa",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

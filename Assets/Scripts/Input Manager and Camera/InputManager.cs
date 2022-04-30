@@ -1,56 +1,67 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+namespace Input_Manager_and_Camera
 {
-    private static InputManager _instance;
-
-    public static InputManager Instance => _instance;
-
-
-    private MasterControls masterControls;
+    public class InputManager : MonoBehaviour
+    {
+        private static InputManager _instance;
     
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-        }
-        masterControls = new MasterControls();
-        Cursor.visible = false;
-    }
 
-    private void OnEnable()
-    {
-        masterControls.Enable();
-    }
+        //Singleton setup
+        public static InputManager Instance => _instance;
 
-    private void OnDisable()
-    {
-        masterControls.Disable();
-    }
 
-    public Vector2 GetPlayerMovement()
-    {
-        return masterControls.Player.Move.ReadValue<Vector2>();
-    }
+        private MasterControls masterControls;
     
-    public Vector2 GetMouseDelta()
-    {
-        return masterControls.Player.Look.ReadValue<Vector2>();
-    }
+        private void Awake()
+        {
+            //More singleton setup
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
+        
+            masterControls = new MasterControls();
+        
+            //Hides the cursor
+            Cursor.visible = false;
+        
+        }
 
-    public bool PlayerJumpedThisFrame()
-    {
-        return masterControls.Player.Jump.triggered;
+        private void OnEnable()
+        {
+            masterControls.Enable();
+        }
 
+        private void OnDisable()
+        {
+            masterControls.Disable();
+        }
+
+        public Vector2 GetPlayerMovement()
+        {
+            return masterControls.Player.Move.ReadValue<Vector2>();
+        }
+    
+        public Vector2 GetMouseDelta()
+        {
+            return masterControls.Player.Look.ReadValue<Vector2>();
+        }
+
+        public bool PlayerJumpedThisFrame()
+        {
+            return masterControls.Player.Jump.triggered;
+
+        }
+
+        public void Interact(InputAction.CallbackContext context)
+        {
+            Debug.Log("We fired");
+        }
     }
 }
-
