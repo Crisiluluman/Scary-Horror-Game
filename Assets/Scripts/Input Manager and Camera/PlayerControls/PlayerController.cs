@@ -4,7 +4,7 @@ namespace Input_Manager_and_Camera.PlayerControls
 {
     [RequireComponent(typeof(CharacterController))] 
     public class PlayerController : MonoBehaviour
-    {
+    {/*
         private InputManager _inputManager;
         
         #region Player speed and camera movement
@@ -29,7 +29,9 @@ namespace Input_Manager_and_Camera.PlayerControls
         private void Start()
         {
             _controller = GetComponent<CharacterController>();
-            _inputManager = InputManager.Instance;
+            //_inputManager = InputManager.Instance;
+
+            _inputManager = new InputManager();
             
             //There should be no possible null exception here
             //TODO: Fix potential null exception
@@ -69,6 +71,6 @@ namespace Input_Manager_and_Camera.PlayerControls
 
 
         }
-    } 
+    */} 
 }
 

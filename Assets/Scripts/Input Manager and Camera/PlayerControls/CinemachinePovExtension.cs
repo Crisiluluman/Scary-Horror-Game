@@ -17,7 +17,10 @@ namespace Input_Manager
         private Vector3 _startinRotation;
 
         protected override void Awake() {
-            _inputManager = InputManager.Instance;
+
+            // _inputManager = InputManager.Instance;
+            _inputManager = new InputManager();
+            
             base.Awake();
 
         }

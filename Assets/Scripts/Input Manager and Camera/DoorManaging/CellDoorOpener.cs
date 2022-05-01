@@ -1,6 +1,7 @@
 using System;
+using Input_Manager_and_Camera.PlayerControls;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Input_Manager_and_Camera.DoorManaging
 {
@@ -12,10 +13,12 @@ namespace Input_Manager_and_Camera.DoorManaging
         [SerializeField]
         private float theDistance;
 
-        [FormerlySerializedAs("actionDisplay")] [SerializeField]
+        //[FormerlySerializedAs("actionDisplay")] 
+        [SerializeField]
         private GameObject interactKey;
         
-        [FormerlySerializedAs("actionText")] [SerializeField]
+        //[FormerlySerializedAs("actionText")] 
+        [SerializeField]
         private GameObject interactText;
         
         [SerializeField]
@@ -30,9 +33,7 @@ namespace Input_Manager_and_Camera.DoorManaging
 
         private void Start()
         {
-
-            
-            _inputManager = InputManager.Instance;
+             _inputManager = InputManager.Instance;
         }
 
         void Update()
@@ -44,9 +45,15 @@ namespace Input_Manager_and_Camera.DoorManaging
 
         void OnMouseOver()
         {
+
+
             if (theDistance <= 2)
             {
+                //Debug.Log(interactText.GetComponent<Text>().text);
 
+            
+                interactText.GetComponent<Text>().text = "Open door";
+                
                 interactKey.SetActive(true);
                 interactText.SetActive(true);
                 onActionCross.SetActive(true);

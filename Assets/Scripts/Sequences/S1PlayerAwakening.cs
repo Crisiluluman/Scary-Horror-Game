@@ -21,8 +21,9 @@ namespace Sequences
         {            
             //Sets the fadein screen to active in code, as the canvas fills up my entire unity screen..
             fadeScreenIn.SetActive(true);
+            
             //Disables the PlayerController at the start of the game, so the player can't walk around
-            thePlayer.GetComponent<PlayerController>().enabled = false;
+            thePlayer.GetComponent<CameraControls>().enabled = false;
             StartCoroutine(StartScenePlayer());
         }
 
@@ -36,7 +37,7 @@ namespace Sequences
             playerAwakeningText.GetComponent<Text>().text = "What? Where am I?";
             yield return new WaitForSeconds(2);
             playerAwakeningText.GetComponent<Text>().text = "";
-            thePlayer.GetComponent<PlayerController>().enabled = true;
+            thePlayer.GetComponent<CameraControls>().enabled = true;
             
         }
     }

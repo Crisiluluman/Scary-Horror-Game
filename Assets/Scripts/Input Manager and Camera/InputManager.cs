@@ -17,6 +17,7 @@ namespace Input_Manager_and_Camera
         private void Awake()
         {
             //More singleton setup
+            
             if (_instance != null && _instance != this)
             {
                 Destroy(this.gameObject);
@@ -25,7 +26,7 @@ namespace Input_Manager_and_Camera
             {
                 _instance = this;
             }
-        
+            
             masterControls = new MasterControls();
         
             //Hides the cursor and locks it within the game 
