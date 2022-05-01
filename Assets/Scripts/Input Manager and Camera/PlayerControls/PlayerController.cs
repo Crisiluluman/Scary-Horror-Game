@@ -31,10 +31,12 @@ namespace Input_Manager_and_Camera.PlayerControls
             _controller = GetComponent<CharacterController>();
             _inputManager = InputManager.Instance;
             
+            //There should be no possible null exception here
+            //TODO: Fix potential null exception
             cameraTransform = Camera.main.transform;
         }
-
-        //Fixed update?
+        
+        //TODO: Fixed update?
         void Update()
         {
             #region Movement

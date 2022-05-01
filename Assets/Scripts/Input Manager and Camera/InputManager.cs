@@ -28,9 +28,11 @@ namespace Input_Manager_and_Camera
         
             masterControls = new MasterControls();
         
-            //Hides the cursor
-            //Cursor.visible = false;
-        
+            //Hides the cursor and locks it within the game 
+            //TODO: Test if it bugs out in the menu
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
         }
 
         #region ClassSetup

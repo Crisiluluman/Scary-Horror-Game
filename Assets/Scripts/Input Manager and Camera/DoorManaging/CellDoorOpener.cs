@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Input_Manager_and_Camera.DoorManaging
 {
@@ -11,11 +12,11 @@ namespace Input_Manager_and_Camera.DoorManaging
         [SerializeField]
         private float theDistance;
 
-        [SerializeField]
-        private GameObject actionDisplay;
+        [FormerlySerializedAs("actionDisplay")] [SerializeField]
+        private GameObject interactKey;
         
-        [SerializeField]
-        private GameObject actionText;
+        [FormerlySerializedAs("actionText")] [SerializeField]
+        private GameObject interactText;
         
         [SerializeField]
         private GameObject theDoor;
@@ -46,16 +47,16 @@ namespace Input_Manager_and_Camera.DoorManaging
             if (theDistance <= 2)
             {
 
-                actionDisplay.SetActive(true);
-                actionText.SetActive(true);
+                interactKey.SetActive(true);
+                interactText.SetActive(true);
                 onActionCross.SetActive(true);
             }
 
             if (_inputManager.InteractTriggered() && theDistance <= 2)
             {
                 GetComponent<BoxCollider>().enabled = false;
-                actionDisplay.SetActive(false);
-                actionText.SetActive(false);
+                interactKey.SetActive(false);
+                interactText.SetActive(false);
                 theDoor.GetComponent<Animation>().Play("CellDoorOpen");
                 openingSound.Play();
 
@@ -64,8 +65,8 @@ namespace Input_Manager_and_Camera.DoorManaging
 
         void OnMouseExit()
         {
-            actionDisplay.SetActive(false);
-            actionText.SetActive(false);
+            interactKey.SetActive(false);
+            interactText.SetActive(false);
             onActionCross.SetActive(false);
 
         }
