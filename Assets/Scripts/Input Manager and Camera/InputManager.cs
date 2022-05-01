@@ -29,7 +29,7 @@ namespace Input_Manager_and_Camera
             masterControls = new MasterControls();
         
             //Hides the cursor
-            Cursor.visible = false;
+            //Cursor.visible = false;
         
         }
 
