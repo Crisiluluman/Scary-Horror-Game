@@ -73,6 +73,11 @@ namespace Input_Manager_and_Camera
         {
             return masterControls.Player.Interact.triggered;
         }
+        
+        public bool DropItemTriggered()
+        {
+            return masterControls.Player.DropItem.triggered;
+        }
 
         #endregion
 

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Input_Manager_and_Camera.PlayerControls
 {
     [RequireComponent(typeof(CharacterController))]
-    public class CameraControls : MonoBehaviour
+    public class PlayerControls : MonoBehaviour
     {
     
 

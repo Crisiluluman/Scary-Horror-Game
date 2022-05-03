@@ -15,8 +15,6 @@ namespace Input_Manager_and_Camera.PickUpSystem
         [SerializeField]
         private float theDistance;
         
-        //[SerializeField] private GameObject playerCamera; //The Camera that follows the player
-
         [SerializeField]
         private Transform itemSlot;
 
@@ -36,27 +34,30 @@ namespace Input_Manager_and_Camera.PickUpSystem
         private void Start()
         {
             _inputManager = InputManager.Instance;
-
-            //_inputManager = new InputManager();
+            
         }
 
         private void Update()
         {
             theDistance = PlayerRayCasting.distanceFromTarget;
+            
+            //Checks every frame if the gun is picked up
+            //TODO: Find better solution, its working but not super good coding..
+            if (pickedItem)
+            {
+                DropItem(pickedItem);
+            }
 
         }
 
-        void OnMouseOver()
+        
+          void OnMouseOver()
+         
         {
 
             if (theDistance <= 2)
             {
-                
-                if (pickedItem)
-                {
-                    DropItem(pickedItem);
-                }
-                
+
                 //Debug
                 interactText.GetComponent<Text>().text = "Pick up gun";
 
@@ -68,33 +69,36 @@ namespace Input_Manager_and_Camera.PickUpSystem
             
             if (_inputManager.InteractTriggered() && theDistance <= 2)
             {
+
+                
                 interactKey.SetActive(false);
                 interactText.SetActive(false);
                 
+                //var pickable = thePistol.transform.GetComponent<PickableItem>();
                 var pickable = thePistol.transform.GetComponent<PickableItem>();
-                        
+
                 // If object has PickableItem class
                 if (pickable)
                 {
                     // Pick it up
                     PickItem(pickable);
                 }
-                
-            }
+               
+            } 
         }
+        
 
+         
         void OnMouseExit()
         {
             interactKey.SetActive(false);
             interactText.SetActive(false);
             onActionCross.SetActive(false);
         }
-
+        
 
         public void PickItem(PickableItem item)
         {
-            
-            Debug.Log("HELOOO" + item.name);
             
             // Assign reference
             pickedItem = item;
@@ -114,14 +118,10 @@ namespace Input_Manager_and_Camera.PickUpSystem
         
         private void DropItem(PickableItem item)
         {
-            //TODO: Fix
-            // Remove reference
+            if (!_inputManager.DropItemTriggered()) return;
             pickedItem = null;
-            // Remove parent
             item.transform.SetParent(null);
-            // Enable rigidbody
             item.Rb.isKinematic = false;
-            // Add force to throw item a little bit
             item.Rb.AddForce(item.transform.forward * 2, ForceMode.VelocityChange);
         }
     }

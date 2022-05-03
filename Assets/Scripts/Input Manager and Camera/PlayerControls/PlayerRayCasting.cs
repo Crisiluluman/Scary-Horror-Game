@@ -6,18 +6,22 @@ namespace Input_Manager_and_Camera.PlayerControls
     {
     
         public static float distanceFromTarget;
+        
         [SerializeField]
         private float toTarget;
+
+        public static RaycastHit hit;
 
 
         void Update()
         {
 
-            RaycastHit Hit;
+           // RaycastHit hit;
 
-            if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out Hit))
+            if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out hit))
             {
-                toTarget = Hit.distance;
+                //getHitOb = hit;
+                toTarget = hit.distance;
                 distanceFromTarget = toTarget;
             }
 

@@ -23,7 +23,7 @@ namespace Sequences
             fadeScreenIn.SetActive(true);
             
             //Disables the PlayerController at the start of the game, so the player can't walk around
-            thePlayer.GetComponent<CameraControls>().enabled = false;
+            thePlayer.GetComponent<PlayerControls>().enabled = false;
             StartCoroutine(StartScenePlayer());
         }
 
@@ -37,7 +37,7 @@ namespace Sequences
             playerAwakeningText.GetComponent<Text>().text = "What? Where am I?";
             yield return new WaitForSeconds(2);
             playerAwakeningText.GetComponent<Text>().text = "";
-            thePlayer.GetComponent<CameraControls>().enabled = true;
+            thePlayer.GetComponent<PlayerControls>().enabled = true;
             
         }
     }
