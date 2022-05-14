@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Input_Manager_and_Camera.PlayerControls
@@ -5,8 +6,6 @@ namespace Input_Manager_and_Camera.PlayerControls
     [RequireComponent(typeof(CharacterController))]
     public class PlayerControls : MonoBehaviour
     {
-    
-
         // private CharacterController character;
 
         [SerializeField]
@@ -23,13 +22,18 @@ namespace Input_Manager_and_Camera.PlayerControls
 
         [SerializeField]
         private float camSpeed = 0.5f;
-    
+
+        [SerializeField] private AudioSource walkingFx;
+
+        
         private CharacterController _controller;
         private bool _groundedPlayer;
         private Vector3 _playerVelocity;
 
+        private Animator _animator;
+        private String walkingString = "AnimatedWalking";
+        private String jumpString = "Jump";
 
-    
         private InputManager _inputManager;
     
         // private MasterControls playerControls;
@@ -55,9 +59,10 @@ namespace Input_Manager_and_Camera.PlayerControls
 
         
             _controller = GetComponent<CharacterController>();
+            _animator = _controller.GetComponent<Animator>();
         
+            Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
         }
         /*
     #region InputSetup
@@ -78,24 +83,31 @@ namespace Input_Manager_and_Camera.PlayerControls
     
         private void Update()
         {
-            //Checks if grounded or not
-            _groundedPlayer = _controller.isGrounded;
-            if (_groundedPlayer && _playerVelocity.y < 0)
-            {
-                _playerVelocity.y = 0f;
-            }
-        
+            
             //Player movement
             var x = _inputManager.GetPlayerMovement().x;
             var y = _inputManager.GetPlayerMovement().y;
-        
+            
+            //If player is moving, else he's idle
+            if (x != 0 || y != 0)
+            {
+                _animator.SetFloat(walkingString, 1);
+                walkingFx.Play();
+   
+            }
+            else
+            {
+                _animator.SetFloat(walkingString, 0);
+            }
+            
             var move = new Vector3(x, 0, y);
             move = _controller.transform.rotation * move;
             move.y = 0f; //<-- Resets height
 
         
-            if (move.magnitude > 1)
+            if (move.magnitude > 1){
                 move = move.normalized;
+            }
         
             _controller.SimpleMove(move * playerSpeed);
         
@@ -103,6 +115,7 @@ namespace Input_Manager_and_Camera.PlayerControls
             var mx = _inputManager.GetMouseDelta().x * Time.deltaTime;
             var my = - _inputManager.GetMouseDelta().y * Time.deltaTime;
         
+            //Rotates character with mouse x value
             _controller.transform.Rotate(Vector3.up, mx * camSpeed);
         
             var currentRotationX = characterCamera.transform.localEulerAngles.x;
@@ -117,15 +130,23 @@ namespace Input_Manager_and_Camera.PlayerControls
                 currentRotationX = Mathf.Max(currentRotationX, 300);
             }
 
+            //Checks if grounded or not
+            _groundedPlayer = _controller.isGrounded;
+            if (_groundedPlayer && _playerVelocity.y < 0)
+            {
+                _playerVelocity.y = 0f;
+            }
+            
             // Changes the height position of the player.. Aka, Jumping
             if (_inputManager.PlayerJumpedThisFrame() && _groundedPlayer)
             {
+                _animator.SetTrigger(jumpString);
                 _playerVelocity.y += Mathf.Sqrt(jumpHeight * -6.0f * gravityValue);
+
             } 
         
         
             //Player camera
-
             _playerVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_playerVelocity * Time.deltaTime);
             characterCamera.transform.localEulerAngles = new Vector3(currentRotationX, 0, 0);

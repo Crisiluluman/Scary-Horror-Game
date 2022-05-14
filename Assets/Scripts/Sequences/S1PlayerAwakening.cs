@@ -18,7 +18,8 @@ namespace Sequences
         private GameObject playerAwakeningText;
 
         private void Start()
-        {            
+        {
+
             //Sets the fadein screen to active in code, as the canvas fills up my entire unity screen..
             fadeScreenIn.SetActive(true);
             
