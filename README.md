@@ -7,7 +7,7 @@
 * [1911 Pistol Pack](https://assetstore.unity.com/packages/3d/props/guns/1911-pistol-pack-88439)
 * [Free PBR Lamps](https://assetstore.unity.com/packages/3d/props/interior/free-pbr-lamps-70181)
 * [Horror School Props](https://assetstore.unity.com/packages/3d/props/furniture/horror-school-props-112589)
-* [Key and Lock](https://assetstore.unity.com/packages/3d/props/furniture/key-and-lock-193317)
+* [Tools Asset](https://assetstore.unity.com/packages/3d/props/tools/tools-pack-asset-84733#content)
 * [Metal Door](https://assetstore.unity.com/packages/3d/props/metal-door-5397)
 * [Old Military Bed](https://assetstore.unity.com/packages/3d/props/interior/old-military-bed-40205)
 * [Old Yellow Concrete](https://assetstore.unity.com/packages/2d/textures-materials/concrete/old-yellow-concrete-131722)
