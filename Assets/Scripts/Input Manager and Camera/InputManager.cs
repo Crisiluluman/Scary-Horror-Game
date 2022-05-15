@@ -64,7 +64,11 @@ namespace Input_Manager_and_Camera
         public bool PlayerJumpedThisFrame()
         {
             return masterControls.Player.Jump.triggered;
-
+        }
+        
+        public bool PlayerCrouch()
+        {
+            return masterControls.Player.Crouch.triggered;
         }
 
         public bool InteractTriggered()

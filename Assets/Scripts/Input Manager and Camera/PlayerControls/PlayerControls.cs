@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Input_Manager_and_Camera.PlayerControls
 {
     [RequireComponent(typeof(CharacterController))]
     public class PlayerControls : MonoBehaviour
     {
-        // private CharacterController character;
-
         [SerializeField]
         private float playerSpeed = 5;
 
@@ -25,6 +24,7 @@ namespace Input_Manager_and_Camera.PlayerControls
 
         [SerializeField] private AudioSource walkingFx;
 
+        //private GameObject _player;
         
         private CharacterController _controller;
         private bool _groundedPlayer;
@@ -33,73 +33,41 @@ namespace Input_Manager_and_Camera.PlayerControls
         private Animator _animator;
         private String walkingString = "AnimatedWalking";
         private String jumpString = "Jump";
-
-        private InputManager _inputManager;
-    
-        // private MasterControls playerControls;
-
-        // private Vector3 _startinRotation;
+        private String crouchString = "Crouch";
+        private String crouchWalkingString = "CrouchedAnimations";
+        private float cameraCrouchHeight = 0.8f;
+        private float cameraStandHeight = 1.6f;
 
         /*
-    private void Awake()
-    {
-        //_inputManager = new InputManager();
-        //_inputManager = InputManager.Instance;
+        private Vector3 standingPlayer = new Vector3(1.6f, 1.6f, 1.6f);
+        private Vector3 crouchingPlayer = new Vector3(1.6f, 0f, 1.6f);
+        */
 
-        //var x = _inputManager.GetPlayerMovement().x;
-
-    }
-*/
+        private InputManager _inputManager;
+        
 
         private void Start()
         {
             _inputManager = InputManager.Instance;
 
-            //playerControls = new MasterControls();
+           // _player = GameObject.Find("Player");
 
         
             _controller = GetComponent<CharacterController>();
+            
             _animator = _controller.GetComponent<Animator>();
-        
+            _animator.SetBool(crouchString, false);
+            
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        /*
-    #region InputSetup
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Disable();
-    }
-    
-
-    #endregion
-*/
-
-    
+        
         private void Update()
         {
-            
-            //Player movement
+            #region PlayerMovement
             var x = _inputManager.GetPlayerMovement().x;
             var y = _inputManager.GetPlayerMovement().y;
-            
-            //If player is moving, else he's idle
-            if (x != 0 || y != 0)
-            {
-                _animator.SetFloat(walkingString, 1);
-                walkingFx.Play();
-   
-            }
-            else
-            {
-                _animator.SetFloat(walkingString, 0);
-            }
-            
+
             var move = new Vector3(x, 0, y);
             move = _controller.transform.rotation * move;
             move.y = 0f; //<-- Resets height
@@ -110,8 +78,11 @@ namespace Input_Manager_and_Camera.PlayerControls
             }
         
             _controller.SimpleMove(move * playerSpeed);
-        
-            //Player camera
+
+            #endregion
+
+            #region PlayerCamerea/ Rotation
+
             var mx = _inputManager.GetMouseDelta().x * Time.deltaTime;
             var my = - _inputManager.GetMouseDelta().y * Time.deltaTime;
         
@@ -130,6 +101,106 @@ namespace Input_Manager_and_Camera.PlayerControls
                 currentRotationX = Mathf.Max(currentRotationX, 300);
             }
 
+            #endregion
+            
+            #region PlayerWalkingAnimation
+            //If player is moving play sound/ setwalking string to 1 (playing walking animation) else, be idle
+            if (_groundedPlayer && _controller.velocity.magnitude > 2f && walkingFx.isPlaying == false)
+            {
+                walkingFx.Play();
+   
+            }
+            
+            
+            //If player is walking
+            if (x != 0 || y != 0)
+            {
+                //If player is crouching
+                if (_animator.GetBool(crouchString))
+                {
+                    _animator.SetFloat(crouchWalkingString, 1);
+                }
+                else
+                {
+                    _animator.SetFloat(walkingString, 1);
+                }
+   
+            }
+            //Else, if the player is standing still
+            else if(x == 0 || y == 0)
+            {
+                //If the player is not crouching
+                if (_animator.GetBool(crouchString) == false)
+                {
+                    _animator.SetFloat(walkingString, 0);
+                }
+                else
+                {
+                    _animator.SetFloat(crouchWalkingString, 0);
+                    
+                }
+            }
+            
+            /*
+            else if((x != 0 || y != 0) && _player.transform.localScale == crouchingPlayer)
+            {
+                //Debug.Log("CROUCH WALKING");
+                //Debug.Log("X: " + x +"\n" + "Y: " + y );
+
+                _animator.SetFloat(crouchWalkingString, 1);
+            }
+            else if((x == 0 || y == 0) && _player.transform.localScale == crouchingPlayer)
+            {
+                //Debug.Log("CROUCH IDLE ");
+                //Debug.Log("X: " + x +"\n" + "Y: " + y );
+
+                _animator.SetFloat(crouchWalkingString, 0);
+            }
+            */
+            
+
+            #endregion
+
+            #region PlayerCrouching
+
+            //Switched between standing and crouching
+            if (_groundedPlayer && _inputManager.PlayerCrouch())
+            {
+                //Crouching
+                if (_animator.GetBool(crouchString) == false)
+                {
+                    //Crouch position: X = 0, Y = 0.865, Z = 0.585
+                    
+                    //Changes the camerea position while crouching 
+                    var cameraPosition = characterCamera.transform.position;
+                    //cameraPosition.y -= 0.865f;
+                    cameraPosition.y -= 0.5f;
+                    //cameraPosition.z = 0.585f;
+                    //cameraposition.x = 0f;
+                    characterCamera.transform.position = cameraPosition;
+                    _animator.SetBool(crouchString, true);
+                }
+                //Standing
+                else
+                {
+                    //Standing position: X = 0, Y = 1.691, Z = 0.108
+                    
+                    //Resets camera position back to OG position
+                    var cameraPosition = characterCamera.transform.position;
+                    cameraPosition.y += 0.5f;
+                    //cameraPosition.y += 0.865f;
+                    //cameraPosition.z = 0.108f;
+                    //cameraPosition.x = 0f;
+                    characterCamera.transform.position = cameraPosition;
+                    _animator.SetBool(crouchString, false);
+
+                }
+            }
+
+            #endregion
+
+            #region PlayerJumping
+            
             //Checks if grounded or not
             _groundedPlayer = _controller.isGrounded;
             if (_groundedPlayer && _playerVelocity.y < 0)
@@ -144,41 +215,15 @@ namespace Input_Manager_and_Camera.PlayerControls
                 _playerVelocity.y += Mathf.Sqrt(jumpHeight * -6.0f * gravityValue);
 
             } 
-        
-        
-            //Player camera
+            
+
+            #endregion
+            
             _playerVelocity.y += gravityValue * Time.deltaTime;
             _controller.Move(_playerVelocity * Time.deltaTime);
             characterCamera.transform.localEulerAngles = new Vector3(currentRotationX, 0, 0);
         }
 
-        /*
-
-    #region PlayerMethods
-    
-    public Vector2 GetPlayerMovement()
-    {
-        return playerControls.Player.Move.ReadValue<Vector2>();
-    }
-
-    public Vector2 GetMouseDelta()
-    {
-        return playerControls.Player.Look.ReadValue<Vector2>();
-    }
-    
-    public bool PlayerJumpedThisFrame()
-    {
-        return playerControls.Player.Jump.triggered;
-
-    }
-
-    public bool InteractTriggered()
-    {
-        return playerControls.Player.Interact.triggered;
-    }
-    
-
-    #endregion
-    */
+       
     }
 }
