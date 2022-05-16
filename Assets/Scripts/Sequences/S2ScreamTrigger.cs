@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Input_Manager_and_Camera.PlayerControls;
+using Controllers.PlayerControls;
 using UnityEngine;
 using UnityEngine.UI;
 

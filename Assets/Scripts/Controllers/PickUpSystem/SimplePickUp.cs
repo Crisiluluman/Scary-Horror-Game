@@ -1,7 +1,8 @@
 using System;
-using Input_Manager_and_Camera;
-using Input_Manager_and_Camera.PickUpSystem;
-using Input_Manager_and_Camera.PlayerControls;
+using System.Collections;
+using Controllers;
+using Controllers.PickUpSystem;
+using Controllers.PlayerControls;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +35,8 @@ public class SimplePickUp : MonoBehaviour
     [SerializeField]
     private GameObject interactText;
 
+    [SerializeField]
+    private GameObject subtitleText;
     private void Start()
     {
         _inputManager = InputManager.Instance;
@@ -99,6 +102,25 @@ public class SimplePickUp : MonoBehaviour
 
     private void PickItem(PickableItem item)
     {
+        //May need better way for checking this
+        switch (item.name)
+        {
+            case "Pistol":
+                var gunScaleReset = new Vector3(0.2f,0.2f,0.2f);
+                item.transform.localScale = gunScaleReset;
+                StartCoroutine(ItemNotifier(item.name));
+                break;
+            case "Screwdriver":
+                var screwdriverScaleReset = new Vector3(0.1f,0.1f,0.1f);
+                item.transform.localScale = screwdriverScaleReset;
+                StartCoroutine(ItemNotifier(item.name));
+                break;
+            default:
+                var vanityScaleReset = new Vector3(2f,2f,2f);
+                item.transform.localScale = vanityScaleReset;
+                StartCoroutine(ItemNotifier(item.name));
+                break;
+        }
         
         // Assign reference
         pickedItem = item;
@@ -116,7 +138,6 @@ public class SimplePickUp : MonoBehaviour
         item.transform.localEulerAngles = Vector3.zero;
     }
 
-    
     private void DropItem(PickableItem item)
     {
        // if (!_inputManager.DropItemTriggered()) return;
@@ -126,4 +147,29 @@ public class SimplePickUp : MonoBehaviour
         item.Rb.AddForce(item.transform.forward * 2, ForceMode.VelocityChange);
 
     }
+    
+    
+    //Probably also a better way to implement this..
+    private IEnumerator ItemNotifier(String name)
+    {
+        switch (name)
+        {
+            case "Pistol":
+                subtitleText.GetComponent<Text>().text = "A gun, this may come in handy";
+                yield return new WaitForSeconds(1.5f);
+                subtitleText.GetComponent<Text>().text = "";                
+                break;
+            case "Screwdriver":
+                subtitleText.GetComponent<Text>().text = "Maybe I can use this on the door?";
+                yield return new WaitForSeconds(1.5f);
+                subtitleText.GetComponent<Text>().text = "";                
+                break;
+            default:
+                subtitleText.GetComponent<Text>().text = "Hmm, not sure what use this for";
+                yield return new WaitForSeconds(1.5f);
+                subtitleText.GetComponent<Text>().text = "";                
+                break;
+        }    }
+
+
 }

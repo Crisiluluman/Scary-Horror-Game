@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Input_Manager_and_Camera
+namespace Controllers
 {
     public class InputManager : MonoBehaviour
     {

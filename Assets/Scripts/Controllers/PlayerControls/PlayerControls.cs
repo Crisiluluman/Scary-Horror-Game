@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Input_Manager_and_Camera.PlayerControls
+namespace Controllers.PlayerControls
 {
     [RequireComponent(typeof(CharacterController))]
     public class PlayerControls : MonoBehaviour
@@ -58,25 +58,76 @@ namespace Input_Manager_and_Camera.PlayerControls
         
         private void Update()
         {
-            #region PlayerMovement
-            var x = _inputManager.GetPlayerMovement().x;
-            var y = _inputManager.GetPlayerMovement().y;
+            PlayerMovement();
 
-            var move = new Vector3(x, 0, y);
-            move = _controller.transform.rotation * move;
-            move.y = 0f; //<-- Resets height
+            CameraRotation();
 
-        
-            if (move.magnitude > 1){
-                move = move.normalized;
+            PlayerCrouching();
+
+            PlayerJumping();
+
+
+
+            
+
+        }
+
+        private void PlayerJumping()
+        {
+            
+            //Checks if grounded or not
+            groundedPlayer = _controller.isGrounded;
+            if (groundedPlayer && playerVelocity.y < 0)
+            {
+                playerVelocity.y = 0f;
             }
-        
-            _controller.SimpleMove(move * playerSpeed);
+            
+            // Changes the height position of the player.. Aka, Jumping
+            if (_inputManager.PlayerJumpedThisFrame() && groundedPlayer)
+            {
+                animator.SetTrigger(jumpString);
+                playerVelocity.y += Mathf.Sqrt(jumpHeight * -6.0f * gravityValue);
 
-            #endregion
+            } 
+            
 
-            #region PlayerCamerea/ Rotation
+        }
 
+        private void PlayerCrouching()
+        {
+
+            //Switched between standing and crouching
+            if (groundedPlayer && _inputManager.PlayerCrouch())
+            {
+                //Crouching
+                if (animator.GetBool(crouchString) == false)
+                {
+                    
+                    //Changes the camerea position while crouching 
+                    var cameraPosition = characterCamera.transform.position;
+                    cameraPosition.y -= 1f;
+                    //Unable to change z value (Thats why you can see the player while crouching)
+                    //Its not a bug, its a feature
+                    characterCamera.transform.position = cameraPosition;
+                    animator.SetBool(crouchString, true);
+                }
+                //Standing
+                else
+                {
+                    //Resets camera position back to OG position
+                    var cameraPosition = characterCamera.transform.position;
+                    cameraPosition.y += 1f;
+                    characterCamera.transform.position = cameraPosition;
+                    animator.SetBool(crouchString, false);
+
+                }
+            }
+
+        }
+
+        private void CameraRotation()
+        {
+            
             var mx = _inputManager.GetMouseDelta().x * Time.deltaTime;
             var my = - _inputManager.GetMouseDelta().y * Time.deltaTime;
         
@@ -95,9 +146,28 @@ namespace Input_Manager_and_Camera.PlayerControls
                 currentRotationX = Mathf.Max(currentRotationX, 300);
             }
 
-            #endregion
+            playerVelocity.y += gravityValue * Time.deltaTime;
+            _controller.Move(playerVelocity * Time.deltaTime);
+            characterCamera.transform.localEulerAngles = new Vector3(currentRotationX, 0, 0);
+        }
+
+        private void PlayerMovement()
+        {
+            var x = _inputManager.GetPlayerMovement().x;
+            var y = _inputManager.GetPlayerMovement().y;
+
+            var move = new Vector3(x, 0, y);
+            move = _controller.transform.rotation * move;
+            move.y = 0f; //<-- Resets height
+
+        
+            if (move.magnitude > 1){
+                move = move.normalized;
+            }
+        
+            _controller.SimpleMove(move * playerSpeed);
+
             
-            #region PlayerWalkingAnimation
             //If player is moving play sound/ setwalking string to 1 (playing walking animation) else, be idle
             if (groundedPlayer && _controller.velocity.magnitude > 2f && walkingFx.isPlaying == false)
             {
@@ -135,64 +205,6 @@ namespace Input_Manager_and_Camera.PlayerControls
                 }
             }
             
-            #endregion
-
-            #region PlayerCrouching
-
-            //Switched between standing and crouching
-            if (groundedPlayer && _inputManager.PlayerCrouch())
-            {
-                //Crouching
-                if (animator.GetBool(crouchString) == false)
-                {
-                    
-                    //Changes the camerea position while crouching 
-                    var cameraPosition = characterCamera.transform.position;
-                    cameraPosition.y -= 0.5f;
-                    //Unable to change z value (Thats why you can see the player while crouching)
-                    //Its not a bug, its a feature
-                    characterCamera.transform.position = cameraPosition;
-                    animator.SetBool(crouchString, true);
-                }
-                //Standing
-                else
-                {
-                    //Resets camera position back to OG position
-                    var cameraPosition = characterCamera.transform.position;
-                    cameraPosition.y += 0.5f;
-                    characterCamera.transform.position = cameraPosition;
-                    animator.SetBool(crouchString, false);
-
-                }
-            }
-
-            #endregion
-
-            #region PlayerJumping
-            
-            //Checks if grounded or not
-            groundedPlayer = _controller.isGrounded;
-            if (groundedPlayer && playerVelocity.y < 0)
-            {
-                playerVelocity.y = 0f;
-            }
-            
-            // Changes the height position of the player.. Aka, Jumping
-            if (_inputManager.PlayerJumpedThisFrame() && groundedPlayer)
-            {
-                animator.SetTrigger(jumpString);
-                playerVelocity.y += Mathf.Sqrt(jumpHeight * -6.0f * gravityValue);
-
-            } 
-            
-
-            #endregion
-            
-            playerVelocity.y += gravityValue * Time.deltaTime;
-            _controller.Move(playerVelocity * Time.deltaTime);
-            characterCamera.transform.localEulerAngles = new Vector3(currentRotationX, 0, 0);
         }
-
-       
     }
 }

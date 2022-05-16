@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Input_Manager_and_Camera.PickUpSystem
+namespace Controllers.PickUpSystem
 {
     [RequireComponent(typeof(Rigidbody))]
     public class PickableItem : MonoBehaviour

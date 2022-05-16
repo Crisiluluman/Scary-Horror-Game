@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
-using Input_Manager_and_Camera.PickUpSystem;
-using Input_Manager_and_Camera.PlayerControls;
+using Controllers.PickUpSystem;
+using Controllers;
+using Controllers.PlayerControls;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Input_Manager_and_Camera.DoorManaging
+namespace Controllers.DoorManaging
 {
     public class CellDoorOpener : MonoBehaviour
     {
@@ -20,7 +21,6 @@ namespace Input_Manager_and_Camera.DoorManaging
         [SerializeField] 
         private GameObject textbox;
     
-        [SerializeField]
         private float theDistance;
 
         //[FormerlySerializedAs("actionDisplay")] 
@@ -65,7 +65,7 @@ namespace Input_Manager_and_Camera.DoorManaging
         {
 
 
-            if (theDistance <= 3)
+            if (theDistance <= 2)
             {
                 //Debug.Log(interactText.GetComponent<Text>().text);
 
@@ -107,16 +107,25 @@ namespace Input_Manager_and_Camera.DoorManaging
         
         IEnumerator StartLockPick()
         {
+
             lockPickSound.Play();
             yield return new WaitForSeconds(1.5f);
+            
             GetComponent<BoxCollider>().enabled = false;
             interactKey.SetActive(false);
             interactText.SetActive(false);
             theDoor.GetComponent<Animation>().Play("CellDoorOpen");
             openingSound.Play();
+
+            
             textbox.GetComponent<Text>().text = "Nice, now where was that pistol?";
+            Debug.Log(textbox.GetComponent<Text>().text);
+
             yield return new WaitForSeconds(2f);
             textbox.GetComponent<Text>().text = "";
+            
+            Debug.Log(textbox.GetComponent<Text>().text);
+
 
 
         }

@@ -1,5 +1,5 @@
 using System.Collections;
-using Input_Manager_and_Camera.PlayerControls;
+using Controllers.PlayerControls;
 using UnityEngine;
 using UnityEngine.UI;
 

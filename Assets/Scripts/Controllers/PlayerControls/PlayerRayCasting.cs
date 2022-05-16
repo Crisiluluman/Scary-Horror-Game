@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Input_Manager_and_Camera.PlayerControls
+namespace Controllers.PlayerControls
 {
     public class PlayerRayCasting : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace Input_Manager_and_Camera.PlayerControls
 
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out hit))
+            if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.one), out hit))
             {
                 //getHitOb = hit;
                 toTarget = hit.distance;
