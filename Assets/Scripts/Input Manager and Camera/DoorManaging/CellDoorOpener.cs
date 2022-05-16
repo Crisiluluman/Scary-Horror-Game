@@ -65,7 +65,7 @@ namespace Input_Manager_and_Camera.DoorManaging
         {
 
 
-            if (theDistance <= 2)
+            if (theDistance <= 3)
             {
                 //Debug.Log(interactText.GetComponent<Text>().text);
 
@@ -76,22 +76,23 @@ namespace Input_Manager_and_Camera.DoorManaging
                 interactText.SetActive(true);
                 onActionCross.SetActive(true);
 
-            }
-
-            if (_inputManager.InteractTriggered() && theDistance <= 2)
-            {
-                if (screwdriver.transform.IsChildOf(grabslot.transform))
+                if (_inputManager.InteractTriggered())
                 {
-                    StartCoroutine( StartLockPick());
+                    if (screwdriver.transform.IsChildOf(grabslot.transform))
+                    {
+                        StartCoroutine( StartLockPick());
                     
-                }
-                else
-                {
-                    //Suspends routine to so I can show the text for a few seconds
-                    StartCoroutine(StartLockedTextbox());
-                }
+                    }
+                    else
+                    {
+                        //Suspends routine to so I can show the text for a few seconds
+                        StartCoroutine(StartLockedTextbox());
+                    }
 
+                }
             }
+
+           
         }
 
         IEnumerator StartLockedTextbox()
@@ -113,6 +114,10 @@ namespace Input_Manager_and_Camera.DoorManaging
             interactText.SetActive(false);
             theDoor.GetComponent<Animation>().Play("CellDoorOpen");
             openingSound.Play();
+            textbox.GetComponent<Text>().text = "Nice, now where was that pistol?";
+            yield return new WaitForSeconds(2f);
+            textbox.GetComponent<Text>().text = "";
+
 
         }
         

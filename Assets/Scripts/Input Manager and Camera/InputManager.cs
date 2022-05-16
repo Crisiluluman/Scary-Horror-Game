@@ -12,7 +12,7 @@ namespace Input_Manager_and_Camera
         public static InputManager Instance => _instance;
 
 
-        private MasterControls masterControls;
+        private MasterControls _masterControls;
     
         private void Awake()
         {
@@ -27,7 +27,7 @@ namespace Input_Manager_and_Camera
                 _instance = this;
             }
             
-            masterControls = new MasterControls();
+            _masterControls = new MasterControls();
         
 
             
@@ -38,12 +38,12 @@ namespace Input_Manager_and_Camera
 
         private void OnEnable()
         {
-            masterControls.Enable();
+            _masterControls.Enable();
         }
 
         private void OnDisable()
         {
-            masterControls.Disable();
+            _masterControls.Disable();
         }
 
         #endregion
@@ -53,34 +53,39 @@ namespace Input_Manager_and_Camera
 
         public Vector2 GetPlayerMovement()
         {
-            return masterControls.Player.Move.ReadValue<Vector2>();
+            return _masterControls.Player.Move.ReadValue<Vector2>();
         }
     
         public Vector2 GetMouseDelta()
         {
-            return masterControls.Player.Look.ReadValue<Vector2>();
+            return _masterControls.Player.Look.ReadValue<Vector2>();
         }
 
         public bool PlayerJumpedThisFrame()
         {
-            return masterControls.Player.Jump.triggered;
+            return _masterControls.Player.Jump.triggered;
         }
         
         public bool PlayerCrouch()
         {
-            return masterControls.Player.Crouch.triggered;
+            return _masterControls.Player.Crouch.triggered;
         }
 
         public bool InteractTriggered()
         {
-            return masterControls.Player.Interact.triggered;
+            return _masterControls.Player.Interact.triggered;
         }
         
         public bool DropItemTriggered()
         {
-            return masterControls.Player.DropItem.triggered;
+            return _masterControls.Player.DropItem.triggered;
         }
 
+        public bool FireTriggered()
+        {
+            return _masterControls.Player.Fire.triggered;
+        }
+        
         #endregion
 
 
