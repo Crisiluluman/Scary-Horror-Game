@@ -15,6 +15,15 @@
 * [Terrain Textures](https://assetstore.unity.com/packages/2d/textures-materials/floors/terrain-textures-snow-free-samples-54630)
 * [Tileable Bricks Wall](https://assetstore.unity.com/packages/2d/textures-materials/brick/tileable-bricks-wall-24530)
 * [Mixamo assets and animations](https://www.mixamo.com/)
+  * [Monster Maynard]
+  * [Maynard Idle - Mutant Idle]
+  * [Maynard Idle - Mutant Walking]
+  * [Player Joe]
+  * [Joe - Idle ]
+  * [Joe - Walking]
+  * [Joe - Jumping Up]
+  * [Joe - Crouch Idle]
+  * [Joe - Crouch Walking]
 
 ## Third party code used ##
 * [Camera/ Pickupable objects](https://www.patrykgalach.com/2020/03/16/pick-up-items-in-unity/)
