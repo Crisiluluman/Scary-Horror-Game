@@ -1,12 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Controllers;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
 public class EnemyAI : MonoBehaviour
 {
+    //Attack stuff
+    [SerializeField] private float range;
+    [SerializeField] private float damage;
 
     //Helps in creating an enemy that will avoid obstacles, have a patrol and go to the player if seen
     [SerializeField] private NavMeshAgent agent; 
@@ -17,44 +23,58 @@ public class EnemyAI : MonoBehaviour
 
     //Patroling
     [SerializeField] private Vector3 walkPoint; 
-    private bool walkPointSet;
+    private bool _walkPointSet;
     [SerializeField] private float walkPointRange;
     
     //Attacking
     [SerializeField] private float timeBetweenAttacks; 
-    private bool alreadyAttacked; 
+    private bool _alreadyAttacked; 
     
     //Attacking
     [SerializeField] private float sightRange, attackRange; 
-    private bool playerInSightRange, playerInAttackRange; 
+    private bool _playerInSightRange, _playerInAttackRange; 
+
+    private Animator _animator;
+    private String mutanAnimationString = "MutantAnimations";
+    private String mutantAttackString = "MutantAttack";
 
 
-    
     // Start is called before the first frame update
     void Awake()
     {
+
+        
+        _animator = agent.GetComponent<Animator>();
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
+
+
 
     // Update is called once per frame
     void Update()
     {
         //Check if in attack and sight range
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+        _playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        _playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
 
-        if (!playerInSightRange && !playerInAttackRange)
+        if (!_playerInSightRange && !_playerInAttackRange)
         {
+            _animator.SetFloat(mutanAnimationString,1);
+
             Patrolling();
         }
-        if (playerInSightRange && !playerInAttackRange)
+        if (_playerInSightRange && !_playerInAttackRange)
         {
+            _animator.SetFloat(mutanAnimationString,1);
+
             ChasePlayer();
         }
-        if (playerInSightRange && playerInAttackRange)
+        if (_playerInSightRange && _playerInAttackRange)
         {
+            _animator.SetTrigger(mutantAttackString);
+
             AttackPlayer();
         }
     }
@@ -62,12 +82,12 @@ public class EnemyAI : MonoBehaviour
 
     private void Patrolling()
     {
-        if (!walkPointSet)
+        if (!_walkPointSet)
         {
             SearchWalkPoint();
         }
         
-        if (walkPointSet)
+        if (_walkPointSet)
         {
             //Sets the AI to walk to destination
             agent.SetDestination(walkPoint);
@@ -79,7 +99,7 @@ public class EnemyAI : MonoBehaviour
         //If distance <1  the walkpoint is reached
         if (distanceToWalkPoint.magnitude < 1f)
         {
-            walkPointSet = false; //<-- Now the AI will search for a new one
+            _walkPointSet = false; //<-- Now the AI will search for a new one
         }
     }
 
@@ -87,7 +107,7 @@ public class EnemyAI : MonoBehaviour
     {
         //Debug.Log("ENEMY SEARCHING");
 
-        
+
         //Random point in range
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
@@ -98,7 +118,7 @@ public class EnemyAI : MonoBehaviour
         //Fix for only being inside map
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
         {
-            walkPointSet = true;
+            _walkPointSet = true;
             
         }
 
@@ -106,6 +126,7 @@ public class EnemyAI : MonoBehaviour
 
     private void ChasePlayer()
     {
+
         //Debug.Log("ENEMY CHASING");
 
         agent.SetDestination(player.position);
@@ -119,19 +140,29 @@ public class EnemyAI : MonoBehaviour
         agent.SetDestination(transform.position);
         transform.LookAt(player);
 
-        if (!alreadyAttacked)
+
+        
+        if (!_alreadyAttacked)
         {
-            //Insert attack animations
+            _alreadyAttacked = true;
+            DamangeHandler damangeHandler = player.GetComponent<DamangeHandler>();
+            if (damangeHandler != null)
+            {
+                damangeHandler.TakeDamage(damage, damangeHandler.name);
+            }
             
-            
-            alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
 
     private void ResetAttack()
     {
-        alreadyAttacked = false;
+        _alreadyAttacked = false;
     }
+
+
+
+
+
     
 }

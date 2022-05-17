@@ -13,6 +13,7 @@ namespace Controllers
 
 
         private MasterControls _masterControls;
+        
     
         private void Awake()
         {
@@ -28,9 +29,7 @@ namespace Controllers
             }
             
             _masterControls = new MasterControls();
-        
 
-            
 
         }
 
@@ -86,7 +85,14 @@ namespace Controllers
             return _masterControls.Player.Fire.triggered;
         }
         
+        public bool PauseTriggered()
+        {
+            return _masterControls.Player.OpenMenu.triggered;
+        }
+        
         #endregion
+
+
 
 
     }
