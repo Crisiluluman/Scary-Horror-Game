@@ -32,7 +32,7 @@ namespace Controllers.PistolControls
             _inputManager = InputManager.Instance;
 
             //8 bullets
-            bullets = 100f;
+            bullets = 8f;
             
             
             pistol = GameObject.Find("Pistol");
@@ -66,10 +66,10 @@ namespace Controllers.PistolControls
             RaycastHit hit;
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
-                Target target = hit.transform.GetComponent<Target>();
-                if (target != null)
+                DamangeHandler damangeHandler = hit.transform.GetComponent<DamangeHandler>();
+                if (damangeHandler != null)
                 {
-                    target.TakeDamage(damage);
+                    damangeHandler.TakeDamage(damage, damangeHandler.name);
                 }
 
                 //Displays the particle effect on so the rotation matches outward of surface hit
