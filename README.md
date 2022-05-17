@@ -18,3 +18,9 @@
 
 ## Third party code used ##
 * [Camera/ Pickupable objects](https://www.patrykgalach.com/2020/03/16/pick-up-items-in-unity/)
+* [Shooting with Raycasts](https://www.youtube.com/watch?v=THnivyG0Mvo&list=LL&index=3)
+* [3D Enemy AI](https://www.youtube.com/watch?v=UjkSFoLxesw&list=LL&index=2)
+* [NavMeshComponents](https://github.com/Unity-Technologies/NavMeshComponents)
+  *   NavMeshAgent specifically
+* [New Input System](https://www.youtube.com/watch?v=Pzd8NhcRzVo&t=647s)
+
