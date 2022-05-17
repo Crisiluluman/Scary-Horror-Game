@@ -14,6 +14,7 @@
 * [Outdoor Ground Texture](https://assetstore.unity.com/packages/2d/textures-materials/floors/outdoor-ground-textures-12555)
 * [Terrain Textures](https://assetstore.unity.com/packages/2d/textures-materials/floors/terrain-textures-snow-free-samples-54630)
 * [Tileable Bricks Wall](https://assetstore.unity.com/packages/2d/textures-materials/brick/tileable-bricks-wall-24530)
+* [Mixamo assets and animations](https://www.mixamo.com/)
 
 ## Third party code used ##
 * [Camera/ Pickupable objects](https://www.patrykgalach.com/2020/03/16/pick-up-items-in-unity/)
