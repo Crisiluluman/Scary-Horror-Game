@@ -18,12 +18,15 @@
   * [Monster Maynard]
   * [Maynard Idle - Mutant Idle]
   * [Maynard Idle - Mutant Walking]
+  * [Maynard Combat - Mutant Punch]
+  * [Maynard Death - Standing Death Backward 01]
   * [Player Joe]
   * [Joe - Idle ]
   * [Joe - Walking]
   * [Joe - Jumping Up]
   * [Joe - Crouch Idle]
   * [Joe - Crouch Walking]
+  * [Joe Death - Standing React Death]
 
 ## Third party code used ##
 * [Camera/ Pickupable objects](https://www.patrykgalach.com/2020/03/16/pick-up-items-in-unity/)
