@@ -1,6 +1,7 @@
 # Scary-Horror-Game
 
 ## Youtube link ##
+https://youtu.be/XrLrys5JRnQ 
 
 ## Assets used ##
 - Note: All assets are available for free on the Unity Asset Store 
@@ -34,5 +35,11 @@
 * [3D Enemy AI](https://www.youtube.com/watch?v=UjkSFoLxesw&list=LL&index=2)
 * [NavMeshComponents](https://github.com/Unity-Technologies/NavMeshComponents)
   *   NavMeshAgent specifically
+  *   [And this for documentation]()
 * [New Input System](https://www.youtube.com/watch?v=Pzd8NhcRzVo&t=647s)
 
+## Controls ##
+* Use "E" to pick up items
+* "CTRL" to crouch
+* Drop items with "G"
+* Fire pistol with mouse click
